@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="WestwindModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2006/04/edm/ssdl">
+        <EntityContainer Name="WestwindModelStoreContainer">
+          <EntitySet Name="Customer" EntityType="WestwindModel.Store.Customer" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Order" EntityType="WestwindModel.Store.Order" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_Order_Customer" Association="WestwindModel.Store.FK_Order_Customer">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Firstname" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Lastname" Type="nvarchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CustomerId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Total" Type="decimal" Nullable="false" Precision="9" Scale="2" />
+        </EntityType>
+        <Association Name="FK_Order_Customer">
+          <End Role="Customer" Type="WestwindModel.Store.Customer" Multiplicity="1" />
+          <End Role="Order" Type="WestwindModel.Store.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="WestwindModel" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2006/04/edm">
+        <EntityContainer Name="WestwindEntities">
+          <EntitySet Name="Customers" EntityType="WestwindModel.Customer" />
+          <EntitySet Name="Orders" EntityType="WestwindModel.Order" />
+          <AssociationSet Name="FK_Order_Customer" Association="WestwindModel.FK_Order_Customer">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Firstname" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Lastname" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Orders" Relationship="WestwindModel.FK_Order_Customer" FromRole="Customer" ToRole="Order" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Total" Type="Decimal" Nullable="false" Precision="9" Scale="2" />
+          <NavigationProperty Name="Customer" Relationship="WestwindModel.FK_Order_Customer" FromRole="Order" ToRole="Customer" />
+        </EntityType>
+        <Association Name="FK_Order_Customer">
+          <End Role="Customer" Type="WestwindModel.Customer" Multiplicity="1" />
+          <End Role="Order" Type="WestwindModel.Order" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="urn:schemas-microsoft-com:windows:storage:mapping:CS">
+        <EntityContainerMapping StorageEntityContainer="WestwindModelStoreContainer" CdmEntityContainer="WestwindEntities">
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="IsTypeOf(WestwindModel.Customer)">
+              <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Firstname" ColumnName="Firstname" />
+                <ScalarProperty Name="Lastname" ColumnName="Lastname" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Orders">
+            <EntityTypeMapping TypeName="IsTypeOf(WestwindModel.Order)">
+              <MappingFragment StoreEntitySet="Order">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="FK_Order_Customer" TypeName="WestwindModel.FK_Order_Customer" StoreEntitySet="Order">
+            <EndProperty Name="Customer">
+              <ScalarProperty Name="Id" ColumnName="CustomerId" />
+            </EndProperty>
+            <EndProperty Name="Order">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2007/06/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram Name="Westwind">
+        <EntityTypeShape EntityType="WestwindModel.Customer" Width="1.5" PointX="0.75" PointY="0.875" Height="1.787985026041667" IsExpanded="true" />
+        <EntityTypeShape EntityType="WestwindModel.Order" Width="1.5" PointX="3" PointY="1" Height="1.59568359375" IsExpanded="true" />
+        <AssociationConnector Association="WestwindModel.FK_Order_Customer" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="1.797841796875" />
+          <ConnectorPoint PointX="3" PointY="1.797841796875" /></AssociationConnector></Diagram></edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
